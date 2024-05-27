@@ -81,8 +81,14 @@ public class Memo1BankApp {
 	}
 
 	@GetMapping("/accounts/{cbu}/transactions")
-	public Collection<Transaction> getTransactions(@PathVariable Long cbu) {
+	public Collection<Transaction> getTransactionsByCbu(@PathVariable Long cbu) {
 		return transactionService.getTransactionsByCbu(cbu);
+	}
+
+	@GetMapping("/transactions/{id}")
+	public ResponseEntity<Transaction> getTransaction(@PathVariable Long id) {
+		Optional<Transaction> transactionOptional = transactionService.findById(id);
+		return ResponseEntity.of(transactionOptional);
 	}
 
 	@Bean
