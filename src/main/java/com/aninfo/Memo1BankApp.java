@@ -91,6 +91,11 @@ public class Memo1BankApp {
 		return ResponseEntity.of(transactionOptional);
 	}
 
+	@DeleteMapping("/transactions/{id}")
+	public void deleteTransaction(@PathVariable Long id) {
+		transactionService.deleteById(id);
+	}
+
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
