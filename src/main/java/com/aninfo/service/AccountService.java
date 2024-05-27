@@ -3,7 +3,10 @@ package com.aninfo.service;
 import com.aninfo.exceptions.DepositNegativeSumException;
 import com.aninfo.exceptions.InsufficientFundsException;
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
+import com.aninfo.model.TransactionType;
 import com.aninfo.repository.AccountRepository;
+import com.aninfo.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,9 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     public Account createAccount(Account account) {
         return accountRepository.save(account);
@@ -48,6 +54,9 @@ public class AccountService {
         account.setBalance(account.getBalance() - sum);
         accountRepository.save(account);
 
+        Transaction transaction = new Transaction(cbu, TransactionType.WITHDRAWAL, sum);
+        transactionRepository.save(transaction);
+
         return account;
     }
 
@@ -62,7 +71,9 @@ public class AccountService {
         account.setBalance(account.getBalance() + sum);
         accountRepository.save(account);
 
+        Transaction transaction = new Transaction(cbu, TransactionType.DEPOSIT, sum);
+        transactionRepository.save(transaction);
+
         return account;
     }
-
 }
